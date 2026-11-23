@@ -21,6 +21,11 @@ app.get("/lessons", async (req, res) => {
   res.json(lessons);
 });
 
+app.post("/orders", async (req, res) => {
+  const result = await db.collection("order").insertOne(req.body);
+  res.json(result);
+});
+
 async function start() {
   await client.connect();
   db = client.db("afterschool"); // use your own database name
