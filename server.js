@@ -16,6 +16,11 @@ const uri = process.env.MONGO_URI; // keep your Atlas string out of the code
 const client = new MongoClient(uri);
 let db;
 
+app.get("/lessons", async (req, res) => {
+  const lessons = await db.collection("lesson").find({}).toArray();
+  res.json(lessons);
+});
+
 async function start() {
   await client.connect();
   db = client.db("afterschool"); // use your own database name
