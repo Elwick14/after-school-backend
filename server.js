@@ -34,24 +34,36 @@ let db;
 
 // GET /lessons: return all lessons as JSON
 app.get("/lessons", async (req, res) => {
-  const lessons = await db.collection("lesson").find({}).toArray();
-  res.json(lessons);
+  try {
+    const lessons = await db.collection("lesson").find({}).toArray();
+    res.json(lessons);
+  } catch (err) {
+    res.status(500).json({ error: "Could not get lessons" });
+  }
 });
 
 // POST /orders: save a new order in the "order" collection
 app.post("/orders", async (req, res) => {
-  const result = await db.collection("order").insertOne(req.body);
-  res.json(result);
+  try {
+    const result = await db.collection("order").insertOne(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: "Could not save order" });
+  }
 });
 
 // PUT /lessons/:id: update any attribute(s) of one lesson
 // (used after an order to set the new number of spaces)
 app.put("/lessons/:id", async (req, res) => {
-  const result = await db.collection("lesson").updateOne(
-    { _id: new ObjectId(req.params.id) },
-    { $set: req.body }
-  );
-  res.json(result);
+  try {
+    const result = await db.collection("lesson").updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: req.body }
+    );
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ error: "Could not update lesson" });
+  }
 });
 
 // Connect to the database first, then start listening for requests
