@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ObjectId } = require("mongodb");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -10,6 +11,13 @@ app.use(express.json());
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
   next();
+});
+// Static file middleware: serves lesson images
+app.use("/images", express.static(path.join(__dirname, "images")));
+
+// If the image wasn't found above, send an error message
+app.use("/images", (req, res) => {
+  res.status(404).json({ error: "Image not found" });
 });
 
 const uri = process.env.MONGO_URI; // keep your Atlas string out of the code
