@@ -1,0 +1,8 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/lessons/6b04170bdcd7c0ad43a1c266
+method: PUT
+body:
+  type: json
+  content: '{ "space": 3 }'
+order: 2000

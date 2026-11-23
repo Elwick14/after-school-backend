@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
 app.use(cors());
@@ -23,6 +23,14 @@ app.get("/lessons", async (req, res) => {
 
 app.post("/orders", async (req, res) => {
   const result = await db.collection("order").insertOne(req.body);
+  res.json(result);
+});
+
+app.put("/lessons/:id", async (req, res) => {
+  const result = await db.collection("lesson").updateOne(
+    { _id: new ObjectId(req.params.id) },
+    { $set: req.body }
+  );
   res.json(result);
 });
 
